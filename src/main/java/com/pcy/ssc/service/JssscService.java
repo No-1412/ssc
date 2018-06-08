@@ -44,14 +44,14 @@ public class JssscService {
 		//getMoney();
 		
 		if(SystemVariable.betPid == null || !SystemVariable.betPid.equals(SystemVariable.currentPid)) {
-			SystemVariable.betPid = SystemVariable.currentPid;
+			
 			String betCode = BetCode.TOTAL_MAX;
 			if(randNum < 5) {
 				betCode = BetCode.TOTAL_MIN;
 			}
 			float uptodaywin = Float.parseFloat(SystemVariable.uptodaywin);
 			float todaywin = Float.parseFloat(SystemVariable.todaywin);
-			if(uptodaywin >= 1  && uptodaywin > todaywin){
+			if(Math.abs(uptodaywin) >= 1  && uptodaywin > todaywin){
 				System.out.println("连续输了" + num +"次");
 				if(num < betMoney.length) {
 					num ++;
@@ -59,11 +59,13 @@ public class JssscService {
 					num = 0;
 				}
 			}else if(uptodaywin == todaywin) {
+				System.out.println("开奖中。。。");
 				return;
 			}else {
 				num = 0;
 				System.out.println("赢了");
 			}
+			SystemVariable.betPid = SystemVariable.currentPid;
 			SystemVariable.uptodaywin = SystemVariable.todaywin;
 			SystemVariable.betMoney = betMoney[num];
 			
