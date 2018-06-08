@@ -22,13 +22,15 @@ public class JssscService {
 	private CqsscBetService betService;
 	
 	
+	
 	private final static Map<String, String> param;
 	private String lastResultUrl = "https://pk10.xm9900.com/gamessc/lastresult.winer";//最后一次开奖结果
 	private String getRoundUrl = "https://pk10.xm9900.com/gamessc/getround.winer";//当前期数信息
 	private String leftinfoUrl = "https://pk10.xm9900.com/main/leftinfo?game_code=207.winer";//当前金额
 
 	private static int num;
-	private final static Integer[] betMoney= {1,3,9,27,81,200};
+	private static int kjnum;
+	private final static Integer[] betMoney= {5,15,45};
 	static {
 		param = new HashMap<>();
 		param.put("game_code", "207");
@@ -36,9 +38,9 @@ public class JssscService {
 
 	public void jsssc() {
 		int randNum = randomNum();
-		if(CookieVariable.win_session == null) {
+		//if(CookieVariable.win_session == null) {
 			loginService.login("cypeng", "a5932439");
-		}
+		//}
 		getLastResult();
 		getRound();
 		//getMoney();
@@ -52,13 +54,18 @@ public class JssscService {
 			float uptodaywin = Float.parseFloat(SystemVariable.uptodaywin);
 			float todaywin = Float.parseFloat(SystemVariable.todaywin);
 			if(Math.abs(uptodaywin) >= 1  && uptodaywin > todaywin){
-				System.out.println("连续输了" + num +"次");
-				if(num < betMoney.length) {
+				
+				if(num < betMoney.length - 1) {
 					num ++;
 				}else {
 					num = 0;
 				}
+				System.out.println("连续输了" + num +"次");
 			}else if(uptodaywin == todaywin) {
+				if(kjnum++ > 3) {
+					SystemVariable.uptodaywin ="0";
+					kjnum = 0;
+				}
 				System.out.println("开奖中。。。");
 				return;
 			}else {
