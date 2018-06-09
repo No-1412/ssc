@@ -7,9 +7,10 @@ public class SystemVariable {
 	public static Integer betMoney;//下注金额
 	public static String upopcode;//上期开奖号码
 	public static String money;//当前金额
-	public static String uptodaywin = "0";//上次今日输赢
+	public static String uptodaywin;//上次今日输赢
 	public static String todaywin;//今日输赢
 	public static String endtime;//最后开奖时间
+	public static Long uplogintime;//最后开奖时间
 	
 
 	

@@ -18,6 +18,22 @@ public class BetCode {
 	public static final String TOTAL_MAX="newip_1109";
 	public static final String TOTAL_MIN="newip_1110";
 
+	public static final String[] BET_CODE_ARR = {
+			Q1_DAN,
+			Q1_MAX,
+			Q1_MIN,
+			Q1_SHUANG,
+			Q2_MAX,
+			Q2_MIN,
+			Q3_MAX,
+			Q3_MIN,
+			Q4_MAX,
+			Q4_MIN,
+			Q5_MAX,
+			Q5_MIN,
+			TOTAL_MAX,
+			TOTAL_MIN
+		};
 	
 	public static void main(String[] args) {
 		int k=1;

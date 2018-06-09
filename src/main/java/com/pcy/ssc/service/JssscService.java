@@ -30,53 +30,65 @@ public class JssscService {
 
 	private static int num;
 	private static int kjnum;
+	private static int totalBet;
 	private final static Integer[] betMoney= {5,15,45};
+	
 	static {
 		param = new HashMap<>();
 		param.put("game_code", "207");
 	}
 
 	public void jsssc() {
-		int randNum = randomNum();
-		//if(CookieVariable.win_session == null) {
+		//Double randNum = randomNum12();
+		if(SystemVariable.uplogintime == null || (System.currentTimeMillis() - SystemVariable.uplogintime) > 1000*60*10) {
+			SystemVariable.uplogintime = System.currentTimeMillis();
 			loginService.login("cypeng", "a5932439");
-		//}
+		}
 		getLastResult();
 		getRound();
 		//getMoney();
 		
 		if(SystemVariable.betPid == null || !SystemVariable.betPid.equals(SystemVariable.currentPid)) {
-			
-			String betCode = BetCode.TOTAL_MAX;
-			if(randNum < 5) {
-				betCode = BetCode.TOTAL_MIN;
-			}
-			float uptodaywin = Float.parseFloat(SystemVariable.uptodaywin);
+			float uptodaywin = 0;
 			float todaywin = Float.parseFloat(SystemVariable.todaywin);
-			if(Math.abs(uptodaywin) >= 1  && uptodaywin > todaywin){
-				
+			String betCode = BetCode.BET_CODE_ARR[randomNum2(BetCode.BET_CODE_ARR.length)];
+			
+//			if(randomNum1() < 5) {
+//				betCode = BetCode.TOTAL_MIN;
+//			}
+			if(SystemVariable.uptodaywin != null) {
+				uptodaywin = Float.parseFloat(SystemVariable.uptodaywin);
+			}
+			
+			if(SystemVariable.uptodaywin == null) {
+				num = 0;
+				System.out.println("开始。。。");
+			}else if(Math.abs(uptodaywin) >= 1  && uptodaywin > todaywin){
 				if(num < betMoney.length - 1) {
 					num ++;
 				}else {
 					num = 0;
 				}
+				kjnum = 0;
 				System.out.println("连续输了" + num +"次");
 			}else if(uptodaywin == todaywin) {
 				if(kjnum++ > 3) {
-					SystemVariable.uptodaywin ="0";
+					SystemVariable.uptodaywin = null;
 					kjnum = 0;
 				}
 				System.out.println("开奖中。。。");
 				return;
 			}else {
 				num = 0;
+				kjnum = 0;
 				System.out.println("赢了");
 			}
+			totalBet++;
 			SystemVariable.betPid = SystemVariable.currentPid;
 			SystemVariable.uptodaywin = SystemVariable.todaywin;
 			SystemVariable.betMoney = betMoney[num];
 			
-			System.out.println("下注--" + betCode);
+			System.out.println("第"+totalBet+"次下注--" + betCode);
 			betService.postbet(betCode, SystemVariable.betMoney.toString());
 			SystemVariable.print();
 		}
@@ -125,10 +137,12 @@ public class JssscService {
 	 * 
 	 * @return
 	 */
-	public int randomNum() {
-		Random r = new Random();
-		int randomNum = r.nextInt(10);
-		return randomNum;
+	public Double randomNum1() {
+		return (Math.random()*9+1);
 	}
 
+	public int randomNum2(int num) {
+		Random r = new Random();
+		return r.nextInt(num);
+	}
 }

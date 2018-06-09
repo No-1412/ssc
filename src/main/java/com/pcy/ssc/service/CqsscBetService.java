@@ -42,15 +42,7 @@ public class CqsscBetService {
 			seckeyMap.put("type", "0");
 			
 			//获取最新的key
-			String seckey=null;
-			try {
-			 seckey=JsonUtils.get(HttpClientUtil.doPost(seckeyMap, SECKEY_URL).getJsonResult(),"newkey");
-			} catch (Exception e) {
-				e.printStackTrace();
-				loginService.login("cypeng", "a5932439");
-//				 seckey=JsonUtils.getString(HttpClientUtil.doPost(seckeyMap, SECKEY_URL).getJsonResult(),"newkey");
-				 return false;
-			}
+			String seckey= JsonUtils.get(HttpClientUtil.doPost(seckeyMap, SECKEY_URL).getJsonResult(),"newkey");
 			Map<String, String> paramterMap=new HashMap<String, String>();
 			paramterMap.put(betcode, betMoney);//key:球号大小单双等，value投注金额;"newip_5-1006"--五球小
 			paramterMap.put("seckey",seckey);
