@@ -40,30 +40,27 @@ public class JssscService {
 
 	public void jsssc() {
 		//Double randNum = randomNum12();
-		if(SystemVariable.uplogintime == null || (System.currentTimeMillis() - SystemVariable.uplogintime) > 1000*60*10) {
-			SystemVariable.uplogintime = System.currentTimeMillis();
-			loginService.login("cypeng", "a5932439");
-		}
+		//if(SystemVariable.uplogintime == null || (System.currentTimeMillis() - SystemVariable.uplogintime) > 1000*60*10) {
+		//	SystemVariable.uplogintime = System.currentTimeMillis();
+			loginService.login("pengcy", "a5932439");
+		//}
 		getLastResult();
 		getRound();
 		//getMoney();
 		
 		if(SystemVariable.betPid == null || !SystemVariable.betPid.equals(SystemVariable.currentPid)) {
-			float uptodaywin = 0;
+			float uptodaywin = Float.parseFloat(SystemVariable.uptodaywin);
 			float todaywin = Float.parseFloat(SystemVariable.todaywin);
 			String betCode = BetCode.BET_CODE_ARR[randomNum2(BetCode.BET_CODE_ARR.length)];
 			
 //			if(randomNum1() < 5) {
 //				betCode = BetCode.TOTAL_MIN;
 //			}
-			if(SystemVariable.uptodaywin != null) {
-				uptodaywin = Float.parseFloat(SystemVariable.uptodaywin);
-			}
 			
-			if(SystemVariable.uptodaywin == null) {
+			if(SystemVariable.betPid == null) {
 				num = 0;
 				System.out.println("开始。。。");
-			}else if(Math.abs(uptodaywin) >= 1  && uptodaywin > todaywin){
+			}else if(uptodaywin > todaywin){
 				if(num < betMoney.length - 1) {
 					num ++;
 				}else {
@@ -72,8 +69,8 @@ public class JssscService {
 				kjnum = 0;
 				System.out.println("连续输了" + num +"次");
 			}else if(uptodaywin == todaywin) {
-				if(kjnum++ > 3) {
-					SystemVariable.uptodaywin = null;
+				if(++kjnum > 2) {
+					SystemVariable.betPid = null;
 					kjnum = 0;
 				}
 				System.out.println("开奖中。。。");
