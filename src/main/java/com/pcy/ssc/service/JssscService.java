@@ -31,7 +31,7 @@ public class JssscService {
 	private static int num;
 	private static int kjnum;
 	private static int totalBet;
-	private final static Integer[] betMoney= {5,15,45};
+	private final static Integer[] betMoney= {2,6,18};
 	
 	static {
 		param = new HashMap<>();
@@ -51,11 +51,12 @@ public class JssscService {
 		if(SystemVariable.betPid == null || !SystemVariable.betPid.equals(SystemVariable.currentPid)) {
 			float uptodaywin = Float.parseFloat(SystemVariable.uptodaywin);
 			float todaywin = Float.parseFloat(SystemVariable.todaywin);
-			String betCode = BetCode.BET_CODE_ARR[randomNum2(BetCode.BET_CODE_ARR.length)];
 			
-//			if(randomNum1() < 5) {
-//				betCode = BetCode.TOTAL_MIN;
-//			}
+			//随机买
+			//String betCode = BetCode.BET_CODE_ARR[randomNum2(BetCode.BET_CODE_ARR.length)];
+			
+			//上次总和开什么买什么
+			String betCode = getBetCodeByUpTotalDx();
 			
 			if(SystemVariable.betPid == null) {
 				num = 0;
@@ -105,7 +106,28 @@ public class JssscService {
 		SystemVariable.uppid = jo.getString("round");
 		SystemVariable.upopcode = jo.getString("number");
 		SystemVariable.todaywin = jo.getString("todaywin");
+		
+		if(SystemVariable.upopcode == null ) return;
+		String[] codeArr = SystemVariable.upopcode.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\\\"", "").split(",");
+		SystemVariable.totaldx = 0;
+		for (String str : codeArr) {
+			SystemVariable.totaldx += Integer.parseInt(str);
+		}
 
+	}
+	
+	/**
+	 * 上次开奖结果来买大小
+	 * @return
+	 */
+	public static String getBetCodeByUpTotalDx() {
+		if(SystemVariable.totaldx >= 25) {
+			System.out.println("买大。。");
+			return BetCode.TOTAL_MAX;
+		}else {
+			System.out.println("买小。。");
+			return BetCode.TOTAL_MIN;
+		}
 	}
 
 	/**

@@ -11,6 +11,7 @@ public class SystemVariable {
 	public static String todaywin;//今日输赢
 	public static String endtime;//最后开奖时间
 	public static Long uplogintime;//最后开奖时间
+	public static Integer totaldx;//总和大小
 	
 
 	
@@ -29,7 +30,6 @@ public class SystemVariable {
 	public static void printCurrent() {
 		System.out.println("--------------------------第"+ currentPid +"期--倒计时 ："+ endtime +"--今日输赢 " + todaywin + " -------------------------");
 	}
-	
 	
 	
 }
